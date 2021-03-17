@@ -1,46 +1,18 @@
-#pragma once
+//  Lexer.h : This file contains the prototypes for the "Lexer" class.
 #ifndef LEXER_H
 #define LEXER_H
-/*
-Rules for ENBF (Extended Backus-Naur Form), these explain the grammer of our formal language, in this case, the calculator
-
-exp		: term
-		| exp + term
-		| exp - term
-		;
-term	: factor
-		| factor * term
-		| factor / term
-		;
-factor	: number
-		| ( exp )
-		;
-*/
 
 #include <string>
+#include "TokenType.h"
 using namespace std;
-
-
-// Tokens for our Lexer to translate into
-enum TokenType
-{
-	NUMBER,
-	END,
-	PLUS = '+',
-	MINUS = '-',
-	MULTIPLY = '*',
-	DIVIDE = '/',
-	OPEN_PAREN = '(',
-	CLOSE_PAREN = ')'
-};
 
 class Lexer
 {
 public:
-	double		getNumber();
+	double		getNumber() const;
 	TokenType	getNextToken();
-	TokenType	getCurrentToken();
-	void		setEquation(string &userInput);
+	TokenType	getCurrentToken() const;
+	void		setEquation(const string &userInput);
 private:
 	double		currentNumber;
 	string		stringEquation;

@@ -21,6 +21,8 @@
 
 #include <iostream>
 #include <string>
+#include "Parser.h"
+#include "Lexer.h"
 using namespace std;
 
 int main()
@@ -29,21 +31,29 @@ int main()
     string userInput;   // Holds the user's inputed expression
 
     // Greet the user and get their input
-    cout << "Welcome! Please input a valid arithmetic expression to evaluate. Please note this program only accepts expressions that use addition and multiplication. Parentheses are valid in a given expression as well." << endl;
-    cout << "Enter expression: ";
-    cin >> userInput;
-
-
-
+    cout << "Welcome! Please input a valid arithmetic expression to evaluate. Please note this program only accepts expressions that use addition, subtraction, multiplication, and Division." 
+         << endl << "Parentheses are valid in a given expression as well." 
+         << endl << "Enter expression, or \"exit\" to stop, and hit enter: ";
+    getline(cin, userInput); //get user input until newline
+    //Create the Lexer object, then reate Parser object and pass it the Lexer
+    Lexer* activeLexerPtr = new Lexer();
+    Parser* activeParserPtr = new Parser(activeLexerPtr);
+    //Main execution loop   
+    while (userInput != "exit") {
+        //Set userInput into the lexer and run parser
+        try {
+            activeLexerPtr->setEquation(userInput);
+            cout << "Answer: " << activeParserPtr->calculate() << endl;
+        }
+        catch (const string &errorText) {
+            cout << "Error: " << errorText << endl;
+        }
+        //catch (...) {
+        //    cout << "Error: An unknown error occurred when evaluating the equation." << endl;
+        //}
+        //Requery User
+        cout << "Enter expression, or \"exit\" to stop, and hit enter: ";
+        getline(cin, userInput);
+    }
+    return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
