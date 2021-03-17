@@ -20,10 +20,21 @@
 */
 
 #include <iostream>
+#include <string>
+using namespace std;
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    // Declare Variables
+    string userInput;   // Holds the user's inputed expression
+
+    // Greet the user and get their input
+    cout << "Welcome! Please input a valid arithmetic expression to evaluate. Please note this program only accepts expressions that use addition and multiplication. Parentheses are valid in a given expression as well." << endl;
+    cout << "Enter expression: ";
+    cin >> userInput;
+
+
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
