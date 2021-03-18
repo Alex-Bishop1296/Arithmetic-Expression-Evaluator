@@ -84,7 +84,7 @@ double Parser::parseMulDiv() {
 				}
 				else
 				{
-					throw string("Division by zero.");
+					throw string("Division by zero");
 				}
 			}
 			default:
