@@ -78,7 +78,8 @@ double Lexer::getNumber() const {
 }
 
 /*
-	Assigns the user input to the string container inside the Lexer and removes whitespace and newline
+	Mutator method, assigns the user input to the string container inside the Lexer and removes whitespace and newline
+	@param userInput - a reference to a string that contains an arithmetic arguement to solve
 */
 void Lexer::setEquation(const string& userInput) {
 	stringEquation = userInput;

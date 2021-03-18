@@ -31,30 +31,32 @@ int main()
     string userInput;   // Holds the user's inputed expression
 
     // Greet the user and get their input
-    cout << "Welcome! Please input a valid arithmetic expression to evaluate."
-         << endl << "Please note this program only accepts expressions that use addition, subtraction, multiplication, and Division." 
-         << endl << "Parentheses are valid in a given expression as well." 
-         << endl << "Enter expression, or \"exit\" to stop, and hit enter: ";
+    cout << "Welcome! Please input a valid arithmetic expression to evaluate." << endl 
+         << "Please note this program only accepts expressions that use addition, subtraction, multiplication, and Division." << endl 
+         << "Parentheses are valid in a given expression as well." << endl 
+         << "Enter expression, or \"exit\" to stop, and hit enter: ";
     getline(cin, userInput);
 
     Lexer* activeLexerPtr = new Lexer();
     Parser* activeParserPtr = new Parser(activeLexerPtr);
 
-    //Main execution loop   
+    // Main execution loop   
     while (userInput != "exit") {
-        //Set userInput into the lexer and try to run parser
+        // Set userInput into the lexer and try to run parser
         try {
             activeLexerPtr->setEquation(userInput);
             cout << "Answer: " << activeParserPtr->calculate() << endl;
         }
-        catch (const string &errorText) { //Catches all errors from the lexer and parser
+        //Catches all errors from the lexer and parser
+        catch (const string &errorText) { 
             cout << "Error: " << errorText << endl;
         }
         //Requery User
         cout << "Enter expression, or \"exit\" to stop, and hit enter: ";
         getline(cin, userInput);
     }
-    // Garbage collection
+
+    // Garbage collection and program exit
     delete activeLexerPtr;
     delete activeParserPtr;
     return 0;
