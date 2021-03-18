@@ -7,43 +7,47 @@
 */
 #include "Parser.h"
 
-//Constructor
-Parser::Parser(Lexer* parameterLexer) : parserLexer(parameterLexer) {}
+/*	
+	Constructor
+	@param parameterLexer - 
+*/
+Parser::Parser(Lexer* parameterLexer) : lexerPtr(parameterLexer) {}
 
 /*
-	Get the first token from the lexer and all other tokens then evaluates the token and either adds 
-	appropriate number of negation of a value to the the current result or rucurses and evaluates the next
-	primary expression in the give airthemetic problem
-	@return The Solved current primary expression from the Lexer
+	Begins parsing the data obtained from the lexer with a leading call to parseAddSub()
+	@return The solved arithmetic equation as given by the lexer
 */
-double Parser::parsePrimaryExpression() {
-	parserLexer->getNextToken();
+double Parser::calculate() {
+	return parseAddSub();
+}
 
-	switch (parserLexer->getCurrentToken()) {
-		case TokenType::NUMBER:
+/*
+	Performs Addition and Subtraction from the given Lexer tokens as long as there are no multiplications
+	or divisions that need to be execute first as per the Order of Operations
+	@return The solved current primary expression from the Lexer
+*/
+double Parser::parseAddSub() {
+	// Call parseMulDiv() as they are higher in Order of Operations
+	double curResult = parseMulDiv();
+
+	while (true) //Keep looping until the default switch case is hit
+	{
+		switch (lexerPtr->getCurrentToken())
 		{
-			double curResult = parserLexer->getNumber();
-			parserLexer->getNextToken();
-			return curResult;
+		case TokenType::PLUS:
+		{
+			curResult += parseMulDiv();
+			break;
 		}
 		case TokenType::MINUS:
 		{
-			//Return the negative of the expression
-			return -(1.0)*parsePrimaryExpression();
-		}
-		case TokenType::OPEN_PAREN:
-		{
-			double curResult = parseAddSub();
-			if (parserLexer->getCurrentToken() != TokenType::CLOSE_PAREN) 
-			{
-				throw string("Missing parenthesis");
-			}
-			parserLexer->getNextToken();
-			return curResult;
+			curResult -= parseMulDiv();
+			break;
 		}
 		default:
 		{
-			throw string("Expected primary expression");
+			return curResult;
+		}
 		}
 	}
 }
@@ -51,14 +55,14 @@ double Parser::parsePrimaryExpression() {
 /*
 	Performs Multiplication and Division from the given Lexer tokens as long as there are no Primary Expressions
 	(ie parentheses) that need to be execute first as per the order of operations
-	@return The Solved current primary expression from the Lexer
+	@return The solved current primary expression from the Lexer
 */
 double Parser::parseMulDiv() {
 	double curResult = parsePrimaryExpression();
 
 	while (true)
 	{
-		switch (parserLexer->getCurrentToken())
+		switch (lexerPtr->getCurrentToken())
 		{
 			case TokenType::MULTIPLY:
 			{
@@ -85,41 +89,39 @@ double Parser::parseMulDiv() {
 }
 
 /*
-	Performs Addition and Subtraction from the given Lexer tokens as long as there are no multiplications 
-	or divisions that need to be execute first as per the Order of Operations
-	@return The Solved current primary expression from the Lexer
+	Get the first token from the lexer and all other tokens then evaluates the token and either adds
+	appropriate number of negation of a value to the the current result or rucurses and evaluates the next
+	primary expression in the give airthemetic problem
+	@return The solved current primary expression from the Lexer
 */
-double Parser::parseAddSub() {
-	// Call parseMulDiv() as they are higher in Order of Operations
-	double curResult = parseMulDiv();
+double Parser::parsePrimaryExpression() {
+	lexerPtr->getNextToken();
 
-	while (true) //Keep looping until the default switch case is hit
-	{
-		switch (parserLexer->getCurrentToken())
+	switch (lexerPtr->getCurrentToken()) {
+		case TokenType::NUMBER:
 		{
-			case TokenType::PLUS:
+			double curResult = lexerPtr->getNumber();
+			lexerPtr->getNextToken();
+			return curResult;
+		}
+		case TokenType::MINUS:
+		{
+			//Return the negative of the expression
+			return -(1.0) * parsePrimaryExpression();
+		}
+		case TokenType::OPEN_PAREN:
+		{
+			double curResult = parseAddSub();
+			if (lexerPtr->getCurrentToken() != TokenType::CLOSE_PAREN)
 			{
-				curResult += parseMulDiv();
-				break;
+				throw string("Missing parenthesis");
 			}
-			case TokenType::MINUS:
-			{
-				curResult -= parseMulDiv();
-				break;
-			}
-			default:
-			{
-				return curResult;
-			}
+			lexerPtr->getNextToken();
+			return curResult;
+		}
+		default:
+		{
+			throw string("Expected primary expression");
 		}
 	}
-}
-
-/*
-	Begins parsing the data obtained from the lexer with a leading call to parseAddSub()
-	@return The solved arithmetic equation as given by the lexer
-	
-*/
-double Parser::calculate() {
-	return parseAddSub();
 }

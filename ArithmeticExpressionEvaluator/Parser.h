@@ -9,17 +9,12 @@ using namespace std;
 class Parser
 {
 public:
-	Parser(Lexer* lexer);
-
-	double parsePrimaryExpression();
-	double parseMulDiv();
-	double parseAddSub();
-
-	double calculate();
-
+	Parser(Lexer* lexer);				// Constructor method, takes a pointer to a instance of a Lexer object
+	double calculate();					// Primary method, performs a calculation given the tokens passed back from the Parser::parserLexer variable
 private:
-	Lexer* parserLexer = nullptr;
+	Lexer* lexerPtr = nullptr;			// Member VariableContains the pointer to an existing Lexer
+	double parseAddSub();				// Private method, Parse the Lexer for Addition and Subtraction
+	double parseMulDiv();				// Private method, Parse the Lexer for Multiplication and Division
+	double parsePrimaryExpression();	// Private method, Parse the Lexer for PrimaryExpressions; Recursive
 };
-
-
 #endif // !PARSER_H

@@ -10,12 +10,9 @@
 #include "Lexer.h"
 
 /*
-	Accessor for double currentNumber 
-	@return a const double containing value of currentNumber
+	Constructor, set member variables to safe values
 */
-double Lexer::getNumber() const {
-	return currentNumber;
-}
+Lexer::Lexer() : currentNumber(0), stringEquation(""), currentToken(TokenType::END) {}
 
 /*
 	Main method that causes the lexer to interpret the next token from the input sequence
@@ -32,25 +29,25 @@ TokenType Lexer::getNextToken() {
 
 	// Check character for non-number token types
 	switch (ch) {
-		case'*': return currentToken = TokenType::MULTIPLY;
-		case'/': return currentToken = TokenType::DIVIDE;
-		case'+': return currentToken = TokenType::PLUS;
-		case'-': return currentToken = TokenType::MINUS;
-		case'(': return currentToken = TokenType::OPEN_PAREN;
-		case')': return currentToken = TokenType::CLOSE_PAREN;
+	case'*': return currentToken = TokenType::MULTIPLY;
+	case'/': return currentToken = TokenType::DIVIDE;
+	case'+': return currentToken = TokenType::PLUS;
+	case'-': return currentToken = TokenType::MINUS;
+	case'(': return currentToken = TokenType::OPEN_PAREN;
+	case')': return currentToken = TokenType::CLOSE_PAREN;
 	}
 	// Check character and other leading characters for number
 	string stringNumber = "";
 	if (!isdigit(ch) && ch != '.') {
 		// We use append here to prevent an error that was occuring with errorText + ch, which would return junk memory after garbage collection happended
-		throw string("Invalid character found: ").append(1,ch);
+		throw string("Invalid character found: ").append(1, ch);
 	}
 	stringNumber += ch;
 	// While leading equation character is not empty and either a digit or a dot (ie would not stop on dot of 3.14), keep adding to our stringNumber until full number is obtained
 	bool didFindDecimal; //used to prevent multiple decimal points in a single number
 	didFindDecimal = (ch == '.') ? true : false;
-	while (!stringEquation.empty() 
-			&& (isdigit(stringEquation.front()) || stringEquation.front() == '.')) { 
+	while (!stringEquation.empty()
+		&& (isdigit(stringEquation.front()) || stringEquation.front() == '.')) {
 		if (!didFindDecimal && stringEquation.front() == '.')
 			didFindDecimal = true;
 		else if (didFindDecimal && stringEquation.front() == '.') {
@@ -72,7 +69,17 @@ TokenType Lexer::getCurrentToken() const {
 	return currentToken;
 }
 
-//Assigns the user input to the string container inside the Lexer and removes whitespace and newline
+/*
+	Accessor for double currentNumber 
+	@return a const double containing value of currentNumber
+*/
+double Lexer::getNumber() const {
+	return currentNumber;
+}
+
+/*
+	Assigns the user input to the string container inside the Lexer and removes whitespace and newline
+*/
 void Lexer::setEquation(const string& userInput) {
 	stringEquation = userInput;
 	stringEquation.erase(remove_if(stringEquation.begin(), stringEquation.end(), ::isspace), stringEquation.end());  //remove invalid characters from the equation and resize the string it is contained in
