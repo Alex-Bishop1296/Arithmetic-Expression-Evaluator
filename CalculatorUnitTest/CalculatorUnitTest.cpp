@@ -84,10 +84,51 @@ namespace CalculatorUnitTest
 			Assert::AreEqual(getAnswer("-1+1"), expectedResult);
 		}
 
-		TEST_METHOD(TestExtraWhitespace)
+		TEST_METHOD(TestBasicOrderOfOperations)
+		{
+			double expectedResult = 5;
+			Assert::AreEqual(getAnswer("2*(9-2+3)/4"), expectedResult);
+		}
+
+		TEST_METHOD(TestBasicExtraWhitespace)
 		{
 			double expectedResult = 2;
 			Assert::AreEqual(getAnswer("1	\t\n+1"), expectedResult);
+		}
+
+		TEST_METHOD(TestErrorThrowPrimaryExpression)
+		{
+			string expectedResult = "Expected primary expression";
+			Assert::AreEqual(getError("1+"), expectedResult);
+		}
+
+		TEST_METHOD(TestErrorThrowEmptyExpression) {
+			string expectedResult = "Expected primary expression";
+			Assert::AreEqual(getError(""), expectedResult);
+		}
+
+		TEST_METHOD(TestErrorThrowMissingParenthesis)
+		{
+			string expectedResult = "Missing parenthesis";
+			Assert::AreEqual(getError("(1+1"), expectedResult);
+		}
+
+		TEST_METHOD(TestErrorThrowDivisionByZero)
+		{
+			string expectedResult = "Division by zero";
+			Assert::AreEqual(getError("2/0"), expectedResult);
+		}
+
+		TEST_METHOD(TestErrorThrowInvalidCharacter)
+		{
+			string expectedResult = "Invalid character found: x";
+			Assert::AreEqual(getError("1+x"), expectedResult);
+		}
+
+		TEST_METHOD(TestErrorThrowMultipleDecimals)
+		{
+			string expectedResult = "Multiple decimals found in arguement";
+			Assert::AreEqual(getError("1..1+1"), expectedResult);
 		}
 
 		TEST_METHOD(TestExampleExpressionOne) //Tests one of the example input given by the intital problem prompt
@@ -100,36 +141,6 @@ namespace CalculatorUnitTest
 		{
 			double expectedResult = 14;
 			Assert::AreEqual(getAnswer("(1 * 4) + (5 * 2)"), expectedResult);
-		}
-
-		TEST_METHOD(TestPrimaryExpressionErrorThrow)
-		{
-			string expectedResult = "Expected primary expression";
-			Assert::AreEqual(getError("1+"), expectedResult);
-		}
-
-		TEST_METHOD(TestMissingParenthesisErrorThrow)
-		{
-			string expectedResult = "Missing parenthesis";
-			Assert::AreEqual(getError("(1+1"), expectedResult);
-		}
-
-		TEST_METHOD(TestDivisionByZeroErrorThrow)
-		{
-			string expectedResult = "Division by zero";
-			Assert::AreEqual(getError("2/0"), expectedResult);
-		}
-
-		TEST_METHOD(TestInvalidCharacterErrorThrow)
-		{
-			string expectedResult = "Invalid character found: x";
-			Assert::AreEqual(getError("1+x"), expectedResult);
-		}
-
-		TEST_METHOD(TestMultipleDecimalsErrorThrow)
-		{
-			string expectedResult = "Multiple decimals found in arguement";
-			Assert::AreEqual(getError("1..1+1"), expectedResult);
 		}
 	};
 }
