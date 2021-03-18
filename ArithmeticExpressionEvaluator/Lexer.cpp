@@ -29,12 +29,12 @@ TokenType Lexer::getNextToken() {
 
 	// Check character for non-number token types
 	switch (ch) {
-	case'*': return currentToken = TokenType::MULTIPLY;
-	case'/': return currentToken = TokenType::DIVIDE;
-	case'+': return currentToken = TokenType::PLUS;
-	case'-': return currentToken = TokenType::MINUS;
-	case'(': return currentToken = TokenType::OPEN_PAREN;
-	case')': return currentToken = TokenType::CLOSE_PAREN;
+		case'*': return currentToken = TokenType::MULTIPLY;
+		case'/': return currentToken = TokenType::DIVIDE;
+		case'+': return currentToken = TokenType::PLUS;
+		case'-': return currentToken = TokenType::MINUS;
+		case'(': return currentToken = TokenType::OPEN_PAREN;
+		case')': return currentToken = TokenType::CLOSE_PAREN;
 	}
 	// Check character and other leading characters for number
 	string stringNumber = "";
@@ -50,9 +50,8 @@ TokenType Lexer::getNextToken() {
 		&& (isdigit(stringEquation.front()) || stringEquation.front() == '.')) {
 		if (!didFindDecimal && stringEquation.front() == '.')
 			didFindDecimal = true;
-		else if (didFindDecimal && stringEquation.front() == '.') {
+		else if (didFindDecimal && stringEquation.front() == '.') 
 			throw string("Multiple decimals found in arguement");
-		}
 		stringNumber += stringEquation.front();
 		stringEquation.erase(0, 1);
 	}

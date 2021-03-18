@@ -33,26 +33,28 @@ double Parser::parseAddSub() {
 	// Call parseMulDiv() as that is where multiplication and division are evaluated, as they are higher in the order of operations
 	double curResult = parseMulDiv();
 
-	while (true) //Keep looping until the default switch case is hit
+	while (lexerPtr->getCurrentToken() == TokenType::PLUS
+		|| lexerPtr->getCurrentToken() == TokenType::MINUS)
 	{
 		switch (lexerPtr->getCurrentToken())
 		{
-		case TokenType::PLUS:
-		{
-			curResult += parseMulDiv();
-			break;
-		}
-		case TokenType::MINUS:
-		{
-			curResult -= parseMulDiv();
-			break;
-		}
-		default:
-		{
-			return curResult;
-		}
+			case TokenType::PLUS:
+			{
+				curResult += parseMulDiv();
+				break;
+			}
+			case TokenType::MINUS:
+			{
+				curResult -= parseMulDiv();
+				break;
+			}
+			default:
+			{
+				break;
+			}
 		}
 	}
+	return curResult;
 }
 
 /*
@@ -64,7 +66,8 @@ double Parser::parseMulDiv() {
 	// Call parsePrimaryExpressions() as that is where parentheses are evaluated, as they are higher in the order of operations 
 	double curResult = parsePrimaryExpression();
 
-	while (true) //Keep looping until the default switch case is hit
+	while (lexerPtr->getCurrentToken() == TokenType::MULTIPLY 
+		|| lexerPtr->getCurrentToken() == TokenType::DIVIDE) 
 	{
 		switch (lexerPtr->getCurrentToken())
 		{
@@ -88,9 +91,10 @@ double Parser::parseMulDiv() {
 				}
 			}
 			default:
-				return curResult;
+				break;
 		}
 	}
+	return curResult;
 }
 
 
