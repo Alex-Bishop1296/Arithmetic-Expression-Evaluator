@@ -33,6 +33,7 @@ double Parser::parseAddSub() {
 	// Call parseMulDiv() as that is where multiplication and division are evaluated, as they are higher in the order of operations
 	double curResult = parseMulDiv();
 
+	// Evaluate each plus or minus token encounter then check for more multiply or divide tokens
 	while (lexerPtr->getCurrentToken() == TokenType::PLUS
 		|| lexerPtr->getCurrentToken() == TokenType::MINUS)
 	{
@@ -65,7 +66,8 @@ double Parser::parseAddSub() {
 double Parser::parseMulDiv() {
 	// Call parsePrimaryExpressions() as that is where parentheses are evaluated, as they are higher in the order of operations 
 	double curResult = parsePrimaryExpression();
-
+	
+	// Evaluate each Multiply or Divide Token encountered then check for more primary expressions.
 	while (lexerPtr->getCurrentToken() == TokenType::MULTIPLY 
 		|| lexerPtr->getCurrentToken() == TokenType::DIVIDE) 
 	{
@@ -79,7 +81,7 @@ double Parser::parseMulDiv() {
 			case TokenType::DIVIDE:
 			{
 				double tempResult = parsePrimaryExpression();
-				//Divide by zero error checking
+				// Divide by zero error checking
 				if (tempResult != 0.0)
 				{
 					curResult /= tempResult;
@@ -109,17 +111,17 @@ double Parser::parsePrimaryExpression() {
 	lexerPtr->getNextToken();
 
 	switch (lexerPtr->getCurrentToken()) {
-		case TokenType::NUMBER:		//Gets number from the lexer and then get next operater token ready for backtracking
+		case TokenType::NUMBER:		// Gets number from the lexer and then get next operater token ready for backtracking
 		{
 			double curResult = lexerPtr->getNumber();
 			lexerPtr->getNextToken();
 			return curResult;
 		}
-		case TokenType::MINUS:		//Return the negative of the expression
+		case TokenType::MINUS:		// Return the negative of the expression
 		{
 			return -(1.0) * parsePrimaryExpression();
 		}
-		case TokenType::OPEN_PAREN:		//Allows program to begin again from intial process for evaluating a primary expression for nested expressions via parenthesis
+		case TokenType::OPEN_PAREN:		// Allows program to begin again from intial process for evaluating a primary expression for nested expressions via parenthesis
 		{
 			double curResult = parseAddSub();
 			if (lexerPtr->getCurrentToken() != TokenType::CLOSE_PAREN)
@@ -129,7 +131,7 @@ double Parser::parsePrimaryExpression() {
 			lexerPtr->getNextToken();
 			return curResult;
 		}
-		default:	//Error checking for broken expressions like "2++2" or "2+ "
+		default:	// Error checking for broken expressions like "2++2" or "2+ "
 		{
 			throw string("Expected primary expression");
 		}

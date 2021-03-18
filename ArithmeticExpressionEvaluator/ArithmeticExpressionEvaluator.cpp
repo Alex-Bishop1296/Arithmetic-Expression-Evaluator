@@ -46,11 +46,11 @@ int main()
             activeLexerPtr->setEquation(userInput);
             cout << "Answer: " << activeParserPtr->calculate() << endl;
         }
-        //Catches all errors from the lexer and parser
+        // Catches all errors from the lexer and parser
         catch (const string &errorText) { 
             cout << "Error: " << errorText << endl;
         }
-        //Requery User
+        // Requery User
         cout << "Enter expression, or \"exit\" to stop, and hit enter: ";
         getline(cin, userInput);
     }

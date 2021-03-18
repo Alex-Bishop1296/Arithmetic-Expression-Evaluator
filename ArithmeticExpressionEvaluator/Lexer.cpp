@@ -44,7 +44,7 @@ TokenType Lexer::getNextToken() {
 	}
 	stringNumber += ch;
 	// While leading equation character is not empty and either a digit or a dot (ie would not stop on dot of 3.14), keep adding to our stringNumber until full number is obtained
-	bool didFindDecimal; //used to prevent multiple decimal points in a single number
+	bool didFindDecimal; // Used to prevent multiple decimal points in a single number
 	didFindDecimal = (ch == '.') ? true : false;
 	while (!stringEquation.empty()
 		&& (isdigit(stringEquation.front()) || stringEquation.front() == '.')) {
@@ -55,7 +55,7 @@ TokenType Lexer::getNextToken() {
 		stringNumber += stringEquation.front();
 		stringEquation.erase(0, 1);
 	}
-	//stod = string to double
+	// stod = string to double
 	currentNumber = stod(stringNumber);
 	return currentToken = TokenType::NUMBER;
 }
@@ -82,5 +82,5 @@ double Lexer::getNumber() const {
 */
 void Lexer::setEquation(const string& userInput) {
 	stringEquation = userInput;
-	stringEquation.erase(remove_if(stringEquation.begin(), stringEquation.end(), ::isspace), stringEquation.end());  //remove invalid characters from the equation and resize the string it is contained in
+	stringEquation.erase(remove_if(stringEquation.begin(), stringEquation.end(), ::isspace), stringEquation.end());  // Remove invalid characters from the equation and resize the string it is contained in
 }
