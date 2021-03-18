@@ -18,7 +18,6 @@
             Your output should be the computed value of the expression.
             Write your program in an Object Oriented fashion and be prepared to show us your code and discuss your solution. Do not use the "Shunting Yard" algorithm.
 */
-
 #include <iostream>
 #include <string>
 #include "Parser.h"
@@ -32,9 +31,9 @@ int main()
 
     // Greet the user and get their input
     cout << "Welcome! Please input a valid arithmetic expression to evaluate." << endl 
-         << "Please note this program only accepts expressions that use addition, subtraction, multiplication, and Division." << endl 
+         << "Please note this program only accepts expressions that use addition, subtraction, multiplication, and division." << endl 
          << "Parentheses are valid in a given expression as well." << endl 
-         << "Enter expression, or \"exit\" to stop, and hit enter: ";
+         << "Input expression, or \"exit\" to stop, and hit enter: ";
     getline(cin, userInput);
 
     Lexer* activeLexerPtr = new Lexer();
