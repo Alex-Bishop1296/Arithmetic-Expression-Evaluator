@@ -5,7 +5,7 @@
 
 	Purpose: The Lexer takes user input from the main() and begins to Tokenize it so it can be passed to the Parser for understanding. 
 			 The Parser calls the Lexer each time it needs a new token to try and minimize the amount of times the user input needs to be iterated through.
-			 Currently, the time is retrival for operations on the Lexer is O(n).
+			 Each time getNextToken() is called, the Lexer changes it's held member values and shrinks the string containing the equation to tokenize, stringEquation.
 */
 #include "Lexer.h"
 
@@ -23,7 +23,7 @@ TokenType Lexer::getNextToken() {
 	if (stringEquation.empty())
 		return currentToken = TokenType::END;
 
-	// Get the first character of the equation
+	// Get the first character of the equation and remove it from characters still to read from the equation
 	char ch = stringEquation.front();
 	stringEquation.erase(0, 1);
 

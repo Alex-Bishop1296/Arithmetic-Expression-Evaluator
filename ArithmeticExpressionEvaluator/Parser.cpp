@@ -6,7 +6,7 @@
 	Purpose:	The Parser takes tokens and numbers from the Lexer and translates them into a solved arithmetic problem using a Recursive Descent Parser.
 				The basics of this parser is that it attempts to calculate a given problem from the lexer passed to it when Parser.calculate() is called.
 				It does this by creating a "tree" of descending problems to solve and then backtracking up that tree as methods start to return.
-				It is recursive since it is ultimately trying to solve a primary expression that can contain other primary expressions.
+				It is recursive since it is ultimately trying to solve a primary expression that can contain other primary expressions, thus methods call themselves.
 */
 #include "Parser.h"
 
@@ -98,7 +98,6 @@ double Parser::parseMulDiv() {
 	}
 	return curResult;
 }
-
 
 /*
 	Get the first token from the lexer and all other tokens then evaluates the token and either adds

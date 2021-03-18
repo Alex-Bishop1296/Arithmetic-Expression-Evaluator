@@ -1,3 +1,4 @@
+// CalculatorUnitTest.cpp : This file contains unit tests for the AritheticExpressionEvaluator project, specifically those relating to calculator inputs
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "../ArithmeticExpressionEvaluator/Lexer.h"
