@@ -3,13 +3,16 @@
 
 	Programmer: Alex Bishop
 
-	Purpose: The Parser takes tokens and numbers from the Lexer and translates them into a solved arithmetic problem using a Recursive Descent Parser.
+	Purpose:	The Parser takes tokens and numbers from the Lexer and translates them into a solved arithmetic problem using a Recursive Descent Parser.
+				The basics of this parser is that it attempts to calculate a given problem from the lexer passed to it when Parser.calculate() is called.
+				It does this by creating a "tree" of descending problems to solve and then backtracking up that tree as methods start to return.
+				It is recursive since it is ultimately trying to solve a primary expression that can contain other primary expressions.
 */
 #include "Parser.h"
 
 /*	
 	Constructor
-	@param parameterLexer - 
+	@param parameterLexer - Lexer class object that will provide tokens to the parser
 */
 Parser::Parser(Lexer* parameterLexer) : lexerPtr(parameterLexer) {}
 
@@ -27,7 +30,7 @@ double Parser::calculate() {
 	@return The solved current primary expression from the Lexer
 */
 double Parser::parseAddSub() {
-	// Call parseMulDiv() as they are higher in Order of Operations
+	// Call parseMulDiv() as that is where multiplication and division are evaluated, as they are higher in the order of operations
 	double curResult = parseMulDiv();
 
 	while (true) //Keep looping until the default switch case is hit
@@ -58,9 +61,10 @@ double Parser::parseAddSub() {
 	@return The solved current primary expression from the Lexer
 */
 double Parser::parseMulDiv() {
+	// Call parsePrimaryExpressions() as that is where parentheses are evaluated, as they are higher in the order of operations 
 	double curResult = parsePrimaryExpression();
 
-	while (true)
+	while (true) //Keep looping until the default switch case is hit
 	{
 		switch (lexerPtr->getCurrentToken())
 		{
@@ -72,6 +76,7 @@ double Parser::parseMulDiv() {
 			case TokenType::DIVIDE:
 			{
 				double tempResult = parsePrimaryExpression();
+				//Divide by zero error checking
 				if (tempResult != 0.0)
 				{
 					curResult /= tempResult;
@@ -88,6 +93,7 @@ double Parser::parseMulDiv() {
 	}
 }
 
+
 /*
 	Get the first token from the lexer and all other tokens then evaluates the token and either adds
 	appropriate number of negation of a value to the the current result or rucurses and evaluates the next
@@ -95,21 +101,21 @@ double Parser::parseMulDiv() {
 	@return The solved current primary expression from the Lexer
 */
 double Parser::parsePrimaryExpression() {
+	// First call to the lexer to get a token to read
 	lexerPtr->getNextToken();
 
 	switch (lexerPtr->getCurrentToken()) {
-		case TokenType::NUMBER:
+		case TokenType::NUMBER:		//Gets number from the lexer and then get next operater token ready for backtracking
 		{
 			double curResult = lexerPtr->getNumber();
 			lexerPtr->getNextToken();
 			return curResult;
 		}
-		case TokenType::MINUS:
+		case TokenType::MINUS:		//Return the negative of the expression
 		{
-			//Return the negative of the expression
 			return -(1.0) * parsePrimaryExpression();
 		}
-		case TokenType::OPEN_PAREN:
+		case TokenType::OPEN_PAREN:		//Allows program to begin again from intial process for evaluating a primary expression for nested expressions via parenthesis
 		{
 			double curResult = parseAddSub();
 			if (lexerPtr->getCurrentToken() != TokenType::CLOSE_PAREN)
@@ -119,7 +125,7 @@ double Parser::parsePrimaryExpression() {
 			lexerPtr->getNextToken();
 			return curResult;
 		}
-		default:
+		default:	//Error checking for broken expressions like "2++2" or "2+ "
 		{
 			throw string("Expected primary expression");
 		}
