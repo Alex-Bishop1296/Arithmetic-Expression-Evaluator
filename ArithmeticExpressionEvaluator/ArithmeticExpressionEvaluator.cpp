@@ -40,14 +40,17 @@ int main()
     Parser* activeParserPtr = new Parser(activeLexerPtr);
 
     // Main execution loop   
-    while (userInput != "exit") {
+    while (userInput != "exit") 
+    {
         // Set userInput into the lexer and try to run parser
-        try {
+        try 
+        {
             activeLexerPtr->setEquation(userInput);
             cout << "Answer: " << activeParserPtr->calculate() << endl;
         }
         // Catches all errors from the lexer and parser
-        catch (const string &errorText) { 
+        catch (const string &errorText) 
+        { 
             cout << "Error: " << errorText << endl;
         }
         // Requery User

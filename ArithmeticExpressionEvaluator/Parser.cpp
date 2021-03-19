@@ -20,7 +20,8 @@ Parser::Parser(Lexer* parameterLexer) : lexerPtr(parameterLexer) {}
 	Begins parsing the data obtained from the lexer with a leading call to parseAddSub()
 	@return The solved arithmetic equation as given by the lexer
 */
-double Parser::calculate() {
+double Parser::calculate() 
+{
 	return parseAddSub();
 }
 
@@ -29,7 +30,8 @@ double Parser::calculate() {
 	or divisions that need to be execute first as per the Order of Operations
 	@return The solved current primary expression from the Lexer
 */
-double Parser::parseAddSub() {
+double Parser::parseAddSub() 
+{
 	// Call parseMulDiv() as that is where multiplication and division are evaluated, as they are higher in the order of operations
 	double curResult = parseMulDiv();
 
@@ -63,7 +65,8 @@ double Parser::parseAddSub() {
 	(ie parentheses) that need to be execute first as per the order of operations
 	@return The solved current primary expression from the Lexer
 */
-double Parser::parseMulDiv() {
+double Parser::parseMulDiv() 
+{
 	// Call parsePrimaryExpressions() as that is where parentheses are evaluated, as they are higher in the order of operations 
 	double curResult = parsePrimaryExpression();
 	
@@ -105,11 +108,13 @@ double Parser::parseMulDiv() {
 	primary expression in the give airthemetic problem
 	@return The solved current primary expression from the Lexer
 */
-double Parser::parsePrimaryExpression() {
+double Parser::parsePrimaryExpression() 
+{
 	// First call to the lexer to get a token to read
 	lexerPtr->getNextToken();
 
-	switch (lexerPtr->getCurrentToken()) {
+	switch (lexerPtr->getCurrentToken()) 
+	{
 		case TokenType::NUMBER:		// Gets number from the lexer and then get next operater token ready for backtracking
 		{
 			double curResult = lexerPtr->getNumber();

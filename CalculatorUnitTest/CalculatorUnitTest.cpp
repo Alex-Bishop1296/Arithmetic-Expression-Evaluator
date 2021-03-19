@@ -19,31 +19,37 @@ namespace CalculatorUnitTest
 		Parser* parserPtr;
 
 		// Test Constructor 
-		CalculatorUnitTest() {
+		CalculatorUnitTest() 
+		{
 			lexerPtr = new Lexer;
 			parserPtr = new Parser(lexerPtr);
 		}
 		// Test Destructor
-		~CalculatorUnitTest() {
+		~CalculatorUnitTest() 
+		{
 			delete lexerPtr;
 			delete parserPtr;
 		}
 		// Generic method to get answer from calculator, I don't catch for exceptions because I expect them not to happen in these tests
-		double getAnswer(string equation) {
+		double getAnswer(string equation) 
+		{
 			double result;
 			lexerPtr->setEquation(equation);
 			result = parserPtr->calculate();
 			return result;
 		}
 		// Method for equations designed to fail and receive an error throw, returns the error message of that throw
-		string getError(string equation) {
+		string getError(string equation) 
+		{
 			string errorMessage;
-			try {
+			try 
+			{
 				lexerPtr->setEquation(equation);
 				parserPtr->calculate();
 			}
 			//Catches all errors from the lexer and parser
-			catch (const string& errorText) {
+			catch (const string& errorText) 
+			{
 				errorMessage = errorText;
 			}
 			return errorMessage;

@@ -18,7 +18,8 @@ Lexer::Lexer() : currentNumber(0), stringEquation(""), currentToken(TokenType::E
 	Main method that causes the lexer to interpret the next token from the input sequence
 	@return the next token interpreted from the equation stored in the lexer
 */
-TokenType Lexer::getNextToken() {
+TokenType Lexer::getNextToken() 
+{
 	// If the equation is empty, simply return an END token
 	if (stringEquation.empty())
 		return currentToken = TokenType::END;
@@ -28,7 +29,8 @@ TokenType Lexer::getNextToken() {
 	stringEquation.erase(0, 1);
 
 	// Check character for non-number token types
-	switch (ch) {
+	switch (ch) 
+	{
 		case'*': return currentToken = TokenType::MULTIPLY;
 		case'/': return currentToken = TokenType::DIVIDE;
 		case'+': return currentToken = TokenType::PLUS;
@@ -38,7 +40,8 @@ TokenType Lexer::getNextToken() {
 	}
 	// Check character and other leading characters for number
 	string stringNumber = "";
-	if (!isdigit(ch) && ch != '.') {
+	if (!isdigit(ch) && ch != '.') 
+	{
 		// We use append here to prevent an error that was occuring with errorText + ch, which would return junk memory after garbage collection happended
 		throw string("Invalid character found: ").append(1, ch);
 	}
@@ -47,7 +50,8 @@ TokenType Lexer::getNextToken() {
 	bool didFindDecimal; // Used to prevent multiple decimal points in a single number
 	didFindDecimal = (ch == '.') ? true : false;
 	while (!stringEquation.empty()
-		&& (isdigit(stringEquation.front()) || stringEquation.front() == '.')) {
+		&& (isdigit(stringEquation.front()) || stringEquation.front() == '.')) 
+	{
 		if (!didFindDecimal && stringEquation.front() == '.')
 			didFindDecimal = true;
 		else if (didFindDecimal && stringEquation.front() == '.') 
@@ -64,7 +68,8 @@ TokenType Lexer::getNextToken() {
 	Accessor for TokenType currentToken, similar output to getNextToken but does not progress the lexer's progresss on the equation
 	@return a const TokenType containing value of currentToken
 */
-TokenType Lexer::getCurrentToken() const {
+TokenType Lexer::getCurrentToken() const 
+{
 	return currentToken;
 }
 
@@ -72,7 +77,8 @@ TokenType Lexer::getCurrentToken() const {
 	Accessor for double currentNumber 
 	@return a const double containing value of currentNumber
 */
-double Lexer::getNumber() const {
+double Lexer::getNumber() const 
+{
 	return currentNumber;
 }
 
@@ -80,7 +86,8 @@ double Lexer::getNumber() const {
 	Mutator method, assigns the user input to the string container inside the Lexer and removes whitespace and newline
 	@param userInput - a reference to a string that contains an arithmetic arguement to solve
 */
-void Lexer::setEquation(const string& userInput) {
+void Lexer::setEquation(const string& userInput) 
+{
 	stringEquation = userInput;
 	stringEquation.erase(remove_if(stringEquation.begin(), stringEquation.end(), ::isspace), stringEquation.end());  // Remove invalid characters from the equation and resize the string it is contained in
 }
